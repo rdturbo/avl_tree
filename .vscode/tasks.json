@@ -6,12 +6,11 @@
 			"label": "C/C++: g++ build active file",
 			"command": "/usr/bin/g++",
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
 				"-std=c++20",
-				"${file}",
+				"${workspaceFolder}/*.cpp",
 				"-o",
-				"${fileDirname}/${fileBasenameNoExtension}"
+				"${fileDirname}/avltree"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
