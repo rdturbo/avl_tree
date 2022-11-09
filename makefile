@@ -5,5 +5,5 @@ main.o: main.cpp
 	g++ -c main.cpp
 
 clean:
-	rm *.o avltree
+	rm *.o avltree output.txt
 	
