@@ -1,4 +1,5 @@
 #include "avl_tree.h"
+#include "print_tree.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -48,13 +49,19 @@ int main(int n, char *args[])
     // std::vector<std::string> results{"Initialize()", "Insert(21)"};
     // writeFile(results);
     AVLTree tree;
-    tree.insert(21);
-    tree.insert(56);
-    tree.insert(13);
-    tree.print2D(tree.root, 5);
-    tree.deleteNode(21);
-    tree.deleteNode(56);
-    tree.deleteNode(13);
+    PrintTree p_tree;
+    std::vector<int> inputs{14, 17, 11, 7, 53, 4, 13, 12, 8, 60, 19, 16, 20};
+
+    for (int val : inputs)
+    {
+        tree.insert(val);
+    }
+
+    p_tree.printTree(tree.root);
+    for (int val : inputs)
+    {
+        tree.deleteNode(val);
+    }
 
     return 0;
 }
