@@ -25,6 +25,9 @@ public:
     void clearTree();
     int leftSubtreeMax(AVLNode *node);
 
+    void search(int data);
+    void search(int low, int high);
+
     void update(AVLNode *node);
     AVLNode *rebalance(AVLNode *node);
 
@@ -33,6 +36,10 @@ public:
     AVLNode *lrCase(AVLNode *node);
     AVLNode *rrCase(AVLNode *node);
     AVLNode *rlCase(AVLNode *node);
+
+private:
+    bool search(AVLNode *node, const int &data);
+    std::vector<int> *search(AVLNode *node, const int &low, const int &high);
 };
 
 #endif

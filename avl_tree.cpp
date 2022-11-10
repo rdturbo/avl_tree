@@ -142,6 +142,28 @@ AVLNode *AVLTree::rebalance(AVLNode *node)
     }
 }
 
+void AVLTree::search(int data)
+{
+    if (AVLTree::search(root, data))
+        result.push_back(std::to_string(data));
+    else
+        result.push_back(std::string{"NULL"});
+}
+
+bool AVLTree::search(AVLNode *node, const int &data)
+{
+    if (node == nullptr)
+        return false;
+
+    if (node->key == data)
+        return true;
+
+    bool left_subtree{AVLTree::search(node->left, data)};
+    bool right_subtree{AVLTree::search(node->right, data)};
+
+    return (left_subtree || right_subtree);
+}
+
 AVLNode *AVLTree::llCase(AVLNode *node)
 {
     AVLNode *parent{nullptr};

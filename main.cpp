@@ -58,6 +58,9 @@ int main(int n, char *args[])
     }
 
     p_tree.printTree(tree.root);
+    tree.search(20);
+    tree.search(100);
+    tree.search(7);
 
     std::vector<int> deletes{8, 7, 11, 14, 17};
     for (int val : deletes)
