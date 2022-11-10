@@ -1,3 +1,4 @@
+#include "avl_tree.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -42,10 +43,18 @@ void writeFile(const std::vector<std::string> &output)
 
 int main(int n, char *args[])
 {
-    const std::string kFileName = args[1];
-    readFile(kFileName);
-    std::vector<std::string> results{"Initialize()", "Insert(21)"};
-    writeFile(results);
+    // const std::string kFileName = args[1];
+    // readFile(kFileName);
+    // std::vector<std::string> results{"Initialize()", "Insert(21)"};
+    // writeFile(results);
+    AVLTree tree;
+    tree.insert(21);
+    tree.insert(56);
+    tree.insert(13);
+    tree.print2D(tree.root, 5);
+    tree.deleteNode(21);
+    tree.deleteNode(56);
+    tree.deleteNode(13);
 
     return 0;
 }
