@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-#define SPACE 10
-
 // AVLTree member functions
 void AVLTree::insert(int value)
 {
@@ -33,10 +31,59 @@ AVLNode *AVLTree::insert(AVLNode *parent, AVLNode *child)
     return AVLTree::rebalance(parent);
 }
 
-void AVLTree::deleteNode(int value)
+void AVLTree::deleteNode(int data)
 {
-    delete nodes[value];
-    nodes.erase(value);
+    // delete nodes[value];
+    // nodes.erase(value);
+    root = AVLTree::deleteNode(root, data);
+}
+
+AVLNode *AVLTree::deleteNode(AVLNode *parent, const int &data)
+{
+    if (parent == nullptr)
+        return nullptr;
+
+    if (parent->key > data)
+        parent->left = AVLTree::deleteNode(parent->left, data);
+    else if (parent->key < data)
+        parent->right = AVLTree::deleteNode(parent->right, data);
+    else
+    {
+        AVLNode *child{nullptr};
+        if (parent->left == nullptr)
+        {
+            child = parent->right;
+            nodes.erase(parent->key);
+            delete parent;
+            return child;
+        }
+        else if (parent->right == nullptr)
+        {
+            child = parent->left;
+            nodes.erase(parent->key);
+            delete parent;
+            return child;
+        }
+        else
+        {
+            int left_max{AVLTree::leftSubtreeMax(parent->left)};
+            parent->key = left_max;
+            parent->left = AVLTree::deleteNode(parent->left, left_max);
+        }
+    }
+
+    AVLTree::update(parent);
+    return AVLTree::rebalance(parent);
+}
+
+int AVLTree::leftSubtreeMax(AVLNode *node)
+{
+    AVLNode *curr{node};
+    while (curr->right != nullptr)
+    {
+        curr = curr->right;
+    }
+    return curr->key;
 }
 
 void AVLTree::update(AVLNode *node)
@@ -131,15 +178,13 @@ AVLNode *AVLTree::rlCase(AVLNode *node)
     return AVLTree::rrCase(node);
 }
 
-void AVLTree::print2D(AVLNode *r, int space)
+void AVLTree::clearTree()
 {
-    if (r == nullptr) // Base case  1
-        return;
-    space += SPACE;                    // Increase distance between levels   2
-    AVLTree::print2D(r->right, space); // Process right child first 3
-    std::cout << std::endl;
-    for (int i = SPACE; i < space; i++) // 5
-        std::cout << " ";               // 5.1
-    std::cout << r->key << "\n";        // 6
-    AVLTree::print2D(r->left, space);   // Process left child  7
+    for (auto &node : nodes)
+    {
+        delete node.second;
+        node.second = nullptr;
+        std::cout << "Deleted Node " << node.first << std::endl;
+    }
+    nodes.clear();
 }

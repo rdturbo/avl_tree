@@ -36,6 +36,7 @@ vector<vector<string>> PrintTree::printTree(AVLNode *root)
         }
         cout << endl;
     }
+    cout << "-----------------------------------------------------------" << endl;
     return res;
 }
 

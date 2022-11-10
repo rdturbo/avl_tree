@@ -14,13 +14,16 @@ public:
     std::map<int, AVLNode *> nodes;
     AVLNode *root{nullptr};
 
-    // member functions
+    // default constructor
     AVLTree() = default;
 
-    void insert(int value);
+    void insert(int data);
     AVLNode *insert(AVLNode *parent, AVLNode *child);
 
-    void deleteNode(int val);
+    void deleteNode(int data);
+    AVLNode *deleteNode(AVLNode *parent, const int &data);
+    void clearTree();
+    int leftSubtreeMax(AVLNode *node);
 
     void update(AVLNode *node);
     AVLNode *rebalance(AVLNode *node);
@@ -30,8 +33,6 @@ public:
     AVLNode *lrCase(AVLNode *node);
     AVLNode *rrCase(AVLNode *node);
     AVLNode *rlCase(AVLNode *node);
-
-    void print2D(AVLNode *r, int space);
 };
 
 #endif

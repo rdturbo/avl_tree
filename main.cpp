@@ -58,10 +58,14 @@ int main(int n, char *args[])
     }
 
     p_tree.printTree(tree.root);
-    for (int val : inputs)
+
+    std::vector<int> deletes{8, 7, 11, 14, 17};
+    for (int val : deletes)
     {
         tree.deleteNode(val);
+        p_tree.printTree(tree.root);
     }
+    tree.clearTree();
 
     return 0;
 }
