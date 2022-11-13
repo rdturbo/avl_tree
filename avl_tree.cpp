@@ -1,5 +1,6 @@
 #include "avl_node.h"
 #include "avl_tree.h"
+#include "utilities.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -149,11 +150,15 @@ AVLNode *AVLTree::rebalance(AVLNode *node)
 void AVLTree::search(int data)
 {
     if (AVLTree::search(root, data))
+    {
         std::cout << std::to_string(data) << std::endl;
-    // result.push_back(std::to_string(data));
+        Utilities::writeFile(std::to_string(data));
+    }
     else
+    {
         std::cout << "NULL" << std::endl;
-    // result.push_back(std::string{"NULL"});
+        Utilities::writeFile("NULL");
+    }
 }
 
 void AVLTree::search(int low, int high)
@@ -163,6 +168,7 @@ void AVLTree::search(int low, int high)
     if (nums.empty())
     {
         std::cout << "NULL" << std::endl;
+        Utilities::writeFile("NULL");
     }
     else
     {
@@ -170,6 +176,7 @@ void AVLTree::search(int low, int high)
         std::copy(nums.begin(), nums.end() - 1, std::ostream_iterator<int>(num_string, ","));
         num_string << nums.back();
         std::cout << num_string.str() << std::endl;
+        Utilities::writeFile(num_string.str());
         // result.push_back(num_string.str());
     }
 }
