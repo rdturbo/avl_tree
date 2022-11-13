@@ -3,6 +3,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stack>
+#include <sstream>
+#include <iterator>
+#include <algorithm>
 
 // AVLTree member functions
 void AVLTree::insert(int value)
@@ -145,9 +149,56 @@ AVLNode *AVLTree::rebalance(AVLNode *node)
 void AVLTree::search(int data)
 {
     if (AVLTree::search(root, data))
-        result.push_back(std::to_string(data));
+        std::cout << std::to_string(data) << std::endl;
+    // result.push_back(std::to_string(data));
     else
-        result.push_back(std::string{"NULL"});
+        std::cout << "NULL" << std::endl;
+    // result.push_back(std::string{"NULL"});
+}
+
+void AVLTree::search(int low, int high)
+{
+    std::vector<int> nums{AVLTree::search(root, low, high)};
+    std::sort(nums.begin(), nums.end());
+    if (nums.empty())
+    {
+        std::cout << "NULL" << std::endl;
+    }
+    else
+    {
+        std::ostringstream num_string;
+        std::copy(nums.begin(), nums.end() - 1, std::ostream_iterator<int>(num_string, ","));
+        num_string << nums.back();
+        std::cout << num_string.str() << std::endl;
+        // result.push_back(num_string.str());
+    }
+}
+
+std::vector<int> AVLTree::search(AVLNode *node, const int &low, const int &high)
+{
+    std::vector<int> numbers;
+
+    std::stack<AVLNode *> stack;
+    stack.push(node);
+
+    while (!stack.empty())
+    {
+        AVLNode *curr = stack.top();
+        stack.pop();
+        if (curr != nullptr)
+        {
+            if (curr->key >= low && curr->key <= high)
+                numbers.push_back(curr->key);
+
+            if (low < curr->key)
+                stack.push(curr->left);
+
+            if (high > curr->key)
+                stack.push(curr->right);
+        }
+    }
+
+    return numbers;
 }
 
 bool AVLTree::search(AVLNode *node, const int &data)
@@ -202,6 +253,11 @@ AVLNode *AVLTree::rlCase(AVLNode *node)
 
 void AVLTree::clearTree()
 {
+    if (root == nullptr)
+    {
+        return;
+    }
+
     for (auto &node : nodes)
     {
         delete node.second;
@@ -209,4 +265,5 @@ void AVLTree::clearTree()
         std::cout << "Deleted Node " << node.first << std::endl;
     }
     nodes.clear();
+    root = nullptr;
 }

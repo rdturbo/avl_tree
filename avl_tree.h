@@ -10,7 +10,6 @@ class AVLTree
 {
 public:
     // data members
-    std::vector<std::string> result;
     std::map<int, AVLNode *> nodes;
     AVLNode *root{nullptr};
 
@@ -39,7 +38,7 @@ public:
 
 private:
     bool search(AVLNode *node, const int &data);
-    std::vector<int> *search(AVLNode *node, const int &low, const int &high);
+    std::vector<int> search(AVLNode *node, const int &low, const int &high);
 };
 
 #endif
