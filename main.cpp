@@ -9,8 +9,8 @@ int main(int n, char *args[])
     AVLTree tree;
     PrintTree p_tree;
     const std::string kFileName = args[1];
-    Utilities::readFile(kFileName, tree);
+    Utilities::readFile(kFileName, tree); // read file
     p_tree.printTree(tree.root);
-    tree.clearTree();
+    tree.clearTree(); // clear tree of all data (memory leak)
     return 0;
 }

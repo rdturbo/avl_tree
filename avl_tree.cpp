@@ -12,10 +12,12 @@
 // AVLTree member functions
 void AVLTree::insert(int value)
 {
+
     AVLNode *child_node = new AVLNode(value);
     nodes[value] = child_node;
     root = AVLTree::insert(root, child_node);
     std::cout << "Node " << value << " inserted" << std::endl;
+    std::cout << "--------------------------" << std::endl;
 }
 
 AVLNode *AVLTree::insert(AVLNode *parent, AVLNode *child)
@@ -38,9 +40,9 @@ AVLNode *AVLTree::insert(AVLNode *parent, AVLNode *child)
 
 void AVLTree::deleteNode(int data)
 {
-    // delete nodes[value];
-    // nodes.erase(value);
     root = AVLTree::deleteNode(root, data);
+    std::cout << "Deleted Node " << data << std::endl;
+    std::cout << "--------------------------" << std::endl;
 }
 
 AVLNode *AVLTree::deleteNode(AVLNode *parent, const int &data)
@@ -93,25 +95,8 @@ int AVLTree::leftSubtreeMax(AVLNode *node)
 
 void AVLTree::update(AVLNode *node)
 {
-    int left_height{};
-    if (node->left == nullptr)
-    {
-        left_height = -1;
-    }
-    else
-    {
-        left_height = node->left->height;
-    }
-
-    int right_height{};
-    if (node->right == nullptr)
-    {
-        right_height = -1;
-    }
-    else
-    {
-        right_height = node->right->height;
-    }
+    int left_height = (node->left != nullptr) ? node->left->height : -1;
+    int right_height = (node->right != nullptr) ? node->right->height : -1;
 
     node->height = 1 + std::max(left_height, right_height);
     node->balance_factor = left_height - right_height;
@@ -119,6 +104,7 @@ void AVLTree::update(AVLNode *node)
 
 AVLNode *AVLTree::rebalance(AVLNode *node)
 {
+    // left heavy
     if (node->balance_factor == 2)
     {
         if (node->left->balance_factor > -1)
@@ -130,6 +116,7 @@ AVLNode *AVLTree::rebalance(AVLNode *node)
             return AVLTree::lrCase(node);
         }
     }
+    // right heavy
     else if (node->balance_factor == -2)
     {
         if (node->right->balance_factor < 1)
@@ -177,7 +164,6 @@ void AVLTree::search(int low, int high)
         num_string << nums.back();
         std::cout << num_string.str() << std::endl;
         Utilities::writeFile(num_string.str());
-        // result.push_back(num_string.str());
     }
 }
 
