@@ -14,6 +14,7 @@ void Utilities::clearFile()
 void Utilities::readFile(const std::string &file_name, AVLTree &tree)
 {
     Utilities::clearFile();
+    bool flag{false};
     std::vector<std::string> command;
     std::ifstream file{file_name};
 
@@ -24,12 +25,13 @@ void Utilities::readFile(const std::string &file_name, AVLTree &tree)
         if (command[0] == "Initialize")
         {
             tree.clearTree();
+            flag = true;
             std::cout << "----------------" << std::endl;
             std::cout << "Tree Initialized" << std::endl;
         }
         else
         {
-            Utilities::parseCommand(command, tree);
+            Utilities::parseCommand(command, tree, flag);
         }
     }
     file.close();
@@ -78,17 +80,27 @@ std::vector<std::string> Utilities::parseInput(const std::string &input)
     return store;
 }
 
-void Utilities::parseCommand(const std::vector<std::string> &parsed_input, AVLTree &tree)
+void Utilities::parseCommand(const std::vector<std::string> &parsed_input, AVLTree &tree, bool initialized)
 {
     if (parsed_input[0] == "Insert")
     {
-        std::cout << parsed_input[0] << " - " << parsed_input[1] << std::endl;
-        tree.insert(std::stoi(parsed_input[1]));
+        if (initialized)
+        {
+            std::cout << parsed_input[0] << " - " << parsed_input[1] << std::endl;
+            tree.insert(std::stoi(parsed_input[1]));
+        }
+        else
+            std::cout << "Tree not initialized" << std::endl;
     }
     else if (parsed_input[0] == "Delete")
     {
-        std::cout << parsed_input[0] << " - " << parsed_input[1] << std::endl;
-        tree.deleteNode(std::stoi(parsed_input[1]));
+        if (initialized)
+        {
+            std::cout << parsed_input[0] << " - " << parsed_input[1] << std::endl;
+            tree.deleteNode(std::stoi(parsed_input[1]));
+        }
+        else
+            std::cout << "Tree not initialized" << std::endl;
     }
     else if (parsed_input[0] == "Search")
     {

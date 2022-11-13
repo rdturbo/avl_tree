@@ -11,7 +11,7 @@ namespace Utilities
     void readFile(const std::string &file_name, AVLTree &tree);
     void writeFile(const std::string &output);
     std::vector<std::string> parseInput(const std::string &input);
-    void parseCommand(const std::vector<std::string> &parsed_input, AVLTree &tree);
+    void parseCommand(const std::vector<std::string> &parsed_input, AVLTree &tree, bool initialized);
 
 } // namespace Utilities
 
