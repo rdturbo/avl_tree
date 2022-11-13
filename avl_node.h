@@ -5,14 +5,18 @@ class AVLNode
 {
 public:
     // Data Members
-    int key{};
-    int balance_factor{};
-    int height{};
-    AVLNode *left{nullptr};
-    AVLNode *right{nullptr};
+    int key{};               // key of the node
+    int balance_factor{};    // balance factor of the node
+    int height{};            // height of the node
+    AVLNode *left{nullptr};  // pointer to left child
+    AVLNode *right{nullptr}; // pointer to right child
 
-    // Member Functions
-    AVLNode(int value);
+    /**
+     * Constructor for AVLNode
+     *
+     * @param key node key
+     */
+    AVLNode(int key);
 };
 
 #endif
