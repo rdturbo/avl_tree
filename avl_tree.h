@@ -109,7 +109,7 @@ private:
      * @param node pointer to the node whose
      * height and balance factor is being updated
      */
-    void update(AVLNode *node);
+    void updateHeightAndBF(AVLNode *node);
 
     /**
      * Rebalances tree according to AVL tree definition

@@ -10,16 +10,28 @@
 #include <algorithm>
 
 // AVLTree member functions
-void AVLTree::insert(int value)
-{
 
-    AVLNode *child_node = new AVLNode(value);
-    nodes[value] = child_node;
+/**
+ * This insert method creates a new AVLNode
+ * with given value and calls the other insert
+ * method for inserting at one of the leaves
+ * of the tree
+ */
+void AVLTree::insert(int data)
+{
+    AVLNode *child_node = new AVLNode(data);
+    nodes[data] = child_node;
     root = AVLTree::insert(root, child_node);
-    std::cout << "Node " << value << " inserted" << std::endl;
+    std::cout << "Node " << data << " inserted" << std::endl;
     std::cout << "--------------------------" << std::endl;
 }
 
+/**
+ * Recursive method to find the correct parent
+ * of the inserted child node. Updates the height
+ * and balance factor of nodes on the way up.
+ * Rebalances tree and returns root of rebalanced tree.
+ */
 AVLNode *AVLTree::insert(AVLNode *parent, AVLNode *child)
 {
     if (parent == nullptr)
@@ -34,17 +46,33 @@ AVLNode *AVLTree::insert(AVLNode *parent, AVLNode *child)
         parent->right = AVLTree::insert(parent->right, child);
     }
 
-    AVLTree::update(parent);
+    AVLTree::updateHeightAndBF(parent);
     return AVLTree::rebalance(parent);
 }
 
+/**
+ * DeleteNode calls search to confirm node exists
+ * and then calls the other deleteNode method
+ * for deletion of node.
+ */
 void AVLTree::deleteNode(int data)
 {
+    if (!AVLTree::search(root, data))
+    {
+        std::cout << "Node " << data << " doesn't exist." << std::endl;
+        std::cout << "--------------------------" << std::endl;
+        return;
+    }
     root = AVLTree::deleteNode(root, data);
     std::cout << "Deleted Node " << data << std::endl;
     std::cout << "--------------------------" << std::endl;
 }
 
+/**
+ * Recursive method to find node to be deleted and then
+ * remove the pointer to child and have a pointer from
+ * grandparent to child.
+ */
 AVLNode *AVLTree::deleteNode(AVLNode *parent, const int &data)
 {
     if (parent == nullptr)
@@ -79,10 +107,14 @@ AVLNode *AVLTree::deleteNode(AVLNode *parent, const int &data)
         }
     }
 
-    AVLTree::update(parent);
+    AVLTree::updateHeightAndBF(parent);
     return AVLTree::rebalance(parent);
 }
 
+/**
+ * Returns the max value node in the left subtree
+ * of given node parameter. Helper func for deleteNode.
+ */
 int AVLTree::leftSubtreeMax(AVLNode *node)
 {
     AVLNode *curr{node};
@@ -93,7 +125,10 @@ int AVLTree::leftSubtreeMax(AVLNode *node)
     return curr->key;
 }
 
-void AVLTree::update(AVLNode *node)
+/**
+ * Updates the height and balance factor of node
+ */
+void AVLTree::updateHeightAndBF(AVLNode *node)
 {
     int left_height = (node->left != nullptr) ? node->left->height : -1;
     int right_height = (node->right != nullptr) ? node->right->height : -1;
@@ -102,6 +137,11 @@ void AVLTree::update(AVLNode *node)
     node->balance_factor = left_height - right_height;
 }
 
+/**
+ * Rebalances tree if balance factor of node
+ * is +2 or -2. Calls one of the case methods
+ * for rebalancing.
+ */
 AVLNode *AVLTree::rebalance(AVLNode *node)
 {
     // left heavy
@@ -134,8 +174,12 @@ AVLNode *AVLTree::rebalance(AVLNode *node)
     }
 }
 
+/**
+ * Searches for node with given value.
+ */
 void AVLTree::search(int data)
 {
+    std::cout << "Node found: ";
     if (AVLTree::search(root, data))
     {
         std::cout << std::to_string(data) << std::endl;
@@ -146,12 +190,18 @@ void AVLTree::search(int data)
         std::cout << "NULL" << std::endl;
         Utilities::writeFile("NULL");
     }
+    std::cout << "--------------------------" << std::endl;
 }
 
+/**
+ * Searches for nodes in a given range.
+ */
 void AVLTree::search(int low, int high)
 {
     std::vector<int> nums{AVLTree::search(root, low, high)};
     std::sort(nums.begin(), nums.end());
+
+    std::cout << "Nodes found: ";
     if (nums.empty())
     {
         std::cout << "NULL" << std::endl;
@@ -165,8 +215,13 @@ void AVLTree::search(int low, int high)
         std::cout << num_string.str() << std::endl;
         Utilities::writeFile(num_string.str());
     }
+    std::cout << "--------------------------" << std::endl;
 }
 
+/**
+ * Returns vector of nodes found in low <= node.key <= high.
+ * Vector is empty if no node found.
+ */
 std::vector<int> AVLTree::search(AVLNode *node, const int &low, const int &high)
 {
     std::vector<int> numbers;
@@ -194,6 +249,10 @@ std::vector<int> AVLTree::search(AVLNode *node, const int &low, const int &high)
     return numbers;
 }
 
+/**
+ * Returns true if node with given value is found in tree
+ * else returns false.
+ */
 bool AVLTree::search(AVLNode *node, const int &data)
 {
     if (node == nullptr)
@@ -208,6 +267,9 @@ bool AVLTree::search(AVLNode *node, const int &data)
     return (left_subtree || right_subtree);
 }
 
+/**
+ * Left-Left case
+ */
 AVLNode *AVLTree::llCase(AVLNode *node)
 {
     AVLNode *parent{nullptr};
@@ -215,11 +277,14 @@ AVLNode *AVLTree::llCase(AVLNode *node)
     node->left = parent->right;
     parent->right = node;
 
-    AVLTree::update(node);
-    AVLTree::update(parent);
+    AVLTree::updateHeightAndBF(node);
+    AVLTree::updateHeightAndBF(parent);
     return parent;
 }
 
+/**
+ * Right-Right case
+ */
 AVLNode *AVLTree::rrCase(AVLNode *node)
 {
     AVLNode *parent{nullptr};
@@ -227,23 +292,33 @@ AVLNode *AVLTree::rrCase(AVLNode *node)
     node->right = parent->left;
     parent->left = node;
 
-    AVLTree::update(node);
-    AVLTree::update(parent);
+    AVLTree::updateHeightAndBF(node);
+    AVLTree::updateHeightAndBF(parent);
     return parent;
 }
 
+/**
+ * Left-Right case
+ */
 AVLNode *AVLTree::lrCase(AVLNode *node)
 {
     node->left = AVLTree::rrCase(node->left);
     return AVLTree::llCase(node);
 }
 
+/**
+ * Right-Left case
+ */
 AVLNode *AVLTree::rlCase(AVLNode *node)
 {
     node->right = AVLTree::llCase(node->right);
     return AVLTree::rrCase(node);
 }
 
+/**
+ * Deletes all nodes in tree to prevent
+ * memory leak.
+ */
 void AVLTree::clearTree()
 {
     if (root == nullptr)

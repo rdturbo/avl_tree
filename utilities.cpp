@@ -28,6 +28,7 @@ void Utilities::readFile(const std::string &file_name, AVLTree &tree)
             flag = true;
             std::cout << "--------------------------" << std::endl;
             std::cout << "Tree Initialized" << std::endl;
+            std::cout << "--------------------------" << std::endl;
         }
         else
         {
