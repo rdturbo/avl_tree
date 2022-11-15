@@ -121,6 +121,15 @@ private:
     AVLNode *rebalance(AVLNode *node);
 
     /**
+     * Combines updateHeightAndBF and rebalance method
+     *
+     * @param node pointer to the node being updated and rebalanced
+     *
+     * @returns pointer to root node after rebalance
+     */
+    AVLNode *updateAndRebalance(AVLNode *node);
+
+    /**
      * The Left-Left Rotation Case
      *
      * @param node pointer to the node being rotated

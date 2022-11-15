@@ -46,8 +46,9 @@ AVLNode *AVLTree::insert(AVLNode *parent, AVLNode *child)
         parent->right = AVLTree::insert(parent->right, child);
     }
 
-    AVLTree::updateHeightAndBF(parent);
-    return AVLTree::rebalance(parent);
+    // AVLTree::updateHeightAndBF(parent);
+    // return AVLTree::rebalance(parent);
+    return AVLTree::updateAndRebalance(parent);
 }
 
 /**
@@ -107,8 +108,9 @@ AVLNode *AVLTree::deleteNode(AVLNode *parent, const int &data)
         }
     }
 
-    AVLTree::updateHeightAndBF(parent);
-    return AVLTree::rebalance(parent);
+    // AVLTree::updateHeightAndBF(parent);
+    // return AVLTree::rebalance(parent);
+    return AVLTree::updateAndRebalance(parent);
 }
 
 /**
@@ -147,31 +149,32 @@ AVLNode *AVLTree::rebalance(AVLNode *node)
     // left heavy
     if (node->balance_factor == 2)
     {
-        if (node->left->balance_factor > -1)
-        {
-            return AVLTree::llCase(node);
-        }
-        else
-        {
+        if (node->left->balance_factor == -1)
             return AVLTree::lrCase(node);
-        }
+        else
+            return AVLTree::llCase(node);
     }
     // right heavy
     else if (node->balance_factor == -2)
     {
-        if (node->right->balance_factor < 1)
-        {
-            return AVLTree::rrCase(node);
-        }
-        else
-        {
+        if (node->right->balance_factor == 1)
             return AVLTree::rlCase(node);
-        }
+        else
+            return AVLTree::rrCase(node);
     }
     else
     {
         return node;
     }
+}
+
+/**
+ * Combines update and rebalance
+ */
+AVLNode *AVLTree::updateAndRebalance(AVLNode *node)
+{
+    AVLTree::updateHeightAndBF(node);
+    return AVLTree::rebalance(node);
 }
 
 /**
